@@ -19,11 +19,11 @@ void* thread1(void* arg) {
         strftime(data_hora, sizeof(data_hora), "%d/%m/%Y %H:%M:%S", timeinfo);
 
         // Grava informações nos arquivos
-        FILE* arquivo1 = fopen("registro.txt", "a");
+        FILE* arquivo1 = fopen("registro1.txt", "a");
         fprintf(arquivo1, "Execucao %d - Programa 2 - %s - %s\n", i, nome_thread, data_hora);
         fclose(arquivo1);
 
-        FILE* arquivo2 = fopen("registro.txt", "a");
+        FILE* arquivo2 = fopen("registro2.txt", "a");
         fprintf(arquivo2, "Execucao %d - Programa 2 - %s - %s\n", i, nome_thread, data_hora);
         fclose(arquivo2);
     }
@@ -45,11 +45,11 @@ void* thread2(void* arg) {
         strftime(data_hora, sizeof(data_hora), "%d/%m/%Y %H:%M:%S", timeinfo);
 
         // Grava informações nos arquivos
-        FILE* arquivo1 = fopen("registro.txt", "a");
+        FILE* arquivo1 = fopen("registro1.txt", "a");
         fprintf(arquivo1, "Execucao %d - Programa 2 - %s - %s\n", i, nome_thread, data_hora);
         fclose(arquivo1);
 
-        FILE* arquivo2 = fopen("registro.txt", "a");
+        FILE* arquivo2 = fopen("registro2.txt", "a");
         fprintf(arquivo2, "Execucao %d - Programa 2 - %s - %s\n", i, nome_thread, data_hora);
         fclose(arquivo2);
     }
@@ -71,11 +71,11 @@ void* thread3(void* arg) {
         strftime(data_hora, sizeof(data_hora), "%d/%m/%Y %H:%M:%S", timeinfo);
 
         // Grava informações nos arquivos
-        FILE* arquivo1 = fopen("registro.txt", "a");
+        FILE* arquivo1 = fopen("registro1.txt", "a");
         fprintf(arquivo1, "Execucao %d - Programa 2 - %s - %s\n", i, nome_thread, data_hora);
         fclose(arquivo1);
 
-        FILE* arquivo2 = fopen("registro.txt", "a");
+        FILE* arquivo2 = fopen("registro2.txt", "a");
         fprintf(arquivo2, "Execucao %d - Programa 2 - %s - %s\n", i, nome_thread, data_hora);
         fclose(arquivo2);
     }
