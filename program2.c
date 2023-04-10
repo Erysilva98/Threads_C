@@ -88,7 +88,7 @@ int main() {
     pthread_t thread_id1, thread_id2, thread_id3;
 
     // Quantidade de execuções para cada thread
-    printf("Execucoes para programa 2 Thread 1 = 5 Mil Registro \n");
+    printf("\nExecucoes para programa 2 Thread 1 = 5 Mil Registro \n");
     // scanf("%d", &qtd_execucoes_thread1);
     qtd_execucoes_thread1 = 5000;
 

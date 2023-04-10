@@ -7,4 +7,4 @@
 
 - Executando os 2 Programas no mesmo Terminal
 
-    ./thread1 & ./thread2
+    ./thread1 $1 & ./thread2 $1 &
