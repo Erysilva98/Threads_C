@@ -1,10 +1,13 @@
 # Threads em C
 
+##### Teste de Execução em Sistema Linux
 
-- Compilando os Programas 
+- Compilando e executando os Programas Thread
 
-    gcc -pthread program1.c -o thread1 | gcc -pthread program2.c -o thread2
+    ./executaThreads.sh
 
-- Executando os 2 Programas no mesmo Terminal
+- Erros de execução
 
-    ./thread1 $1 & ./thread2 $1 &
+    obs: Permissão de Execução no Arquivo
+
+    chmod +x executar_programas.sh    
