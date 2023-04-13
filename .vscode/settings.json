@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.jsx": "javascriptreact",
+        "time.h": "c",
+        "stdlib.h": "c"
+    }
+}

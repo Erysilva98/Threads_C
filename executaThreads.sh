@@ -5,8 +5,7 @@ gcc -o thread1 program1.c -lpthread
 gcc -o thread2 program2.c -lpthread
 
 # Executa os programas em threads separadas
-./thread1 &
-./thread2 &
+./thread1 & ./thread2 &
 
 # Aguarda a execução dos programas terminarem
 wait

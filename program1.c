@@ -1,114 +1,138 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <pthread.h>
 #include <time.h>
 
-void* thread1(void* arg) {
-    int i;
-    char nomeThread[] = "Thread 1";
-    time_t tempoTotal;
-    struct tm * tempoInfo;
-    char dataHora[80];
+// Definir o Numero de tarefas 
 
-    for (i = 1; i <= *((int*)arg); i++) {
-        // Obtém data e hora atual
-        time(&tempoTotal);
-        tempoInfo = localtime(&tempoTotal);
-        strftime(dataHora, sizeof(dataHora), "%d/%m/%Y %H:%M:%S", tempoInfo);
+#define tarefas 5000
 
-        // Grava informações nos arquivos
-        FILE* arquivo1 = fopen("registro1.txt", "a");
-        fprintf(arquivo1, "Execucao %d - Programa 1 - %s - %s\n", i, nomeThread, dataHora);
-        fclose(arquivo1);
+// Tamanho máximo do Caracter
+#define tamMax 100
 
-        FILE* arquivo2 = fopen("registro2.txt", "a");
-        fprintf(arquivo2, "Execucao %d - Programa 1 - %s - %s\n", i, nomeThread, dataHora);
-        fclose(arquivo2);
-    }
 
-    pthread_exit(NULL);
-}
+pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex2 = PTHREAD_MUTEX_INITIALIZER;
 
-void* thread2(void* arg) {
-    int i;
-    char nomeThread[] = "Thread 2";
-    time_t tempoTotal;
-    struct tm * tempoInfo;
-    char dataHora[80];
+int numThread = 3;
+int numTarefas;
+int totalTarefas;
 
-    for (i = 1; i <= *((int*)arg); i++) {
-        // Obtém data e hora atual
-        time(&tempoTotal);
-        tempoInfo = localtime(&tempoTotal);
-        strftime(dataHora, sizeof(dataHora), "%d/%m/%Y %H:%M:%S", tempoInfo);
-
-        // Grava informações nos arquivos
-        FILE* arquivo1 = fopen("registro1.txt", "a");
-        fprintf(arquivo1, "Execucao %d - Programa 1 - %s - %s\n", i, nomeThread, dataHora);
-        fclose(arquivo1);
-
-        FILE* arquivo2 = fopen("registro2.txt", "a");
-        fprintf(arquivo2, "Execucao %d - Programa 1 - %s - %s\n", i, nomeThread, dataHora);
-        fclose(arquivo2);
-    }
-
-    pthread_exit(NULL);
-}
-
-void* thread3(void* arg) {
-    int i;
-    char nomeThread[] = "Thread 3";
-    time_t tempoTotal;
-    struct tm * tempoInfo;
-    char dataHora[80];
-
-    for (i = 1; i <= *((int*)arg); i++) {
-        // Obtém data e hora atual
-        time(&tempoTotal);
-        tempoInfo = localtime(&tempoTotal);
-        strftime(dataHora, sizeof(dataHora), "%d/%m/%Y %H:%M:%S", tempoInfo);
-
-        // Grava informações nos arquivos
-        FILE* arquivo1 = fopen("registro1.txt", "a");
-        fprintf(arquivo1, "Execucao %d - Programa 1 - %s - %s\n", i, nomeThread, dataHora);
-        fclose(arquivo1);
-
-        FILE* arquivo2 = fopen("registro2.txt", "a");
-        fprintf(arquivo2, "Execucao %d - Programa 1 - %s - %s\n", i, nomeThread, dataHora);
-        fclose(arquivo2);
-    }
-
-    pthread_exit(NULL);
-}
+void *thread1(void *arg);
+void *thread2(void *arg);
+void *thread3(void *arg);
+void escreveArquivo(char* arquivo, int nExecucao, char* programa, char* numThread);
 
 int main() {
-    int tarefaThread1, tarefaThread2, tarefaThread3;
-    pthread_t idThread1, idThread2, idThread3;
+    clock_t inicio, fim;
+    double tempoGasto;
 
-    // Quantidade de execuções para cada thread
-    printf("\nExecucoes para programa 1 Thread 1 = 5 Mil Registro \n");
-    // scanf("%d", &tarefaThread1);
-    tarefaThread1 = 5000;
+    // Numero de Tarefas da Thread
+    numTarefas = tarefas;
+    totalTarefas = numTarefas * numThread;
 
-    printf("Execucoes para programa 1 Thread 2 = 10 Mil Registro \n");
-    // scanf("%d", &tarefaThread2);
-    tarefaThread2 = 10000;
+    pthread_t threads[numThread];
+    inicio = clock();
+    pthread_create(&threads[0], NULL, thread1, NULL);
+    pthread_create(&threads[1], NULL, thread2, NULL);
+    pthread_create(&threads[2], NULL, thread3, NULL);
+    fim = clock();
 
-    printf("Execucoes para programa 1 Thread 3 = 100 Mil Registro \n");
-    //scanf("%d", &tarefaThread3);
-    tarefaThread3 = 100000;
+    // Tempo em Segundos
+    tempoGasto = (double)(fim - inicio);
+    printf("\n\t Executando o Programa 1 \n\n"
+    " Executando %d tarefas \n"
+    " Foram executadas %d Tarefas no Total \n"
+    " Tempo gasto: %.2f segundos\n\n", tarefas, totalTarefas, tempoGasto);
 
-    // Cria as threads  
-    pthread_create(&idThread1, NULL, thread1, (void*)&tarefaThread1);
-    pthread_create(&idThread2, NULL, thread2, (void*)&tarefaThread2);
-    pthread_create(&idThread3, NULL, thread3, (void*)&tarefaThread3);
+    for (int i = 0; i < numThread; i++) {
+        pthread_join(threads[i], NULL);
+    }
 
-    // Aguarda as threads terminarem
-    pthread_join(idThread1, NULL);
-    pthread_join(idThread2, NULL);
-    pthread_join(idThread3, NULL);
+    return EXIT_SUCCESS;
+}
 
-    printf("\n Programa 1 Finalizado \n");
-    return 0;
-    
+void *thread1(void *arg) {
+    int nExecucao = 0;
+    char programa[tamMax] = "Programa1";
+    char nomeThread[tamMax] = "Thread1";
+    char arquivo1[tamMax] = "registro1.txt";
+    char arquivo2[tamMax] = "registro2.txt";
+
+    for (int i = 0; i < numTarefas; i++) {
+        pthread_mutex_lock(&mutex1);
+        nExecucao++;
+        escreveArquivo(arquivo1, nExecucao, programa, nomeThread);
+        escreveArquivo(arquivo2, nExecucao, programa, nomeThread);
+        if(nExecucao == numThread)
+        {
+            nExecucao = 0;
+        }
+        pthread_mutex_unlock(&mutex2);
+    }
+
+    return NULL;
+}
+
+void *thread2(void *arg) {
+    int nExecucao = 0;
+    char programa[tamMax] = "Programa1";
+    char nomeThread[tamMax] = "Thread2";
+    char arquivo1[tamMax] = "registro1.txt";
+    char arquivo2[tamMax] = "registro2.txt";
+
+    for (int i = 0; i < numTarefas; i++) {
+        pthread_mutex_lock(&mutex2);
+        nExecucao++;
+        escreveArquivo(arquivo1, nExecucao, programa, nomeThread);
+        escreveArquivo(arquivo2, nExecucao, programa, nomeThread);
+        if(nExecucao == numThread)
+        {
+            nExecucao = 0;
+        }
+        pthread_mutex_unlock(&mutex1);
+    }
+
+    return NULL;
+}
+
+void *thread3(void *arg) {
+    int nExecucao = 0;
+    char programa[tamMax] = "Programa1";
+    char nomeThread[tamMax] = "Thread3";
+    char arquivo1[tamMax] = "registro1.txt";
+    char arquivo2[tamMax] = "registro2.txt";
+
+    for (int i = 0; i < numTarefas; i++) {
+        pthread_mutex_lock(&mutex2);
+        nExecucao++;
+        escreveArquivo(arquivo1, nExecucao, programa, nomeThread);
+        escreveArquivo(arquivo2, nExecucao, programa, nomeThread);
+        if(nExecucao == numThread)
+        {
+            nExecucao = 0;
+        }
+        pthread_mutex_unlock(&mutex1);
+    }
+
+    return NULL;
+}
+
+void escreveArquivo(char* arquivo, int nExecucao, char* programa, char* nomeThread) {
+    FILE *fp = fopen(arquivo, "a");
+
+    if (fp == NULL) {
+        printf("Erro ao abrir o arquivo %s.\n", arquivo);
+        exit(1);
+    }
+
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+    char data_hora[tamMax];
+    strftime(data_hora, tamMax, "%c", t);
+
+    fprintf(fp, "%d - %s - %s - Data/Hora: %s\n", nExecucao, programa, nomeThread, data_hora);
+
+    fclose(fp);
 }

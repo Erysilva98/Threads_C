@@ -2,12 +2,12 @@
 
 ##### Teste de Execução em Sistema Linux
 
-- Compilando e executando os Programas Thread
+- Compilando os Programas Thread
 
-    ./executaThreads.sh
+    gcc -o program1 program2.c -lpthread & gcc -o thread1 thread2.c -lpthread
 
-- Erros de execução
+ - Executar os 2 Programas em Background Simutaneamente
 
-    obs: Permissão de Execução no Arquivo
+   ./thread1 & ./thread2 &
 
-    chmod +x executar_programas.sh    
+- Autor Erimilson Silva
