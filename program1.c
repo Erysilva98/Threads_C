@@ -6,7 +6,7 @@
 
 // Definir o Numero de tarefas 
 
-#define tarefas 5000
+#define tarefas 100000
 
 // Tamanho máximo do Caracter
 #define tamMax 100
@@ -15,14 +15,15 @@
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex2 = PTHREAD_MUTEX_INITIALIZER;
 
-int numThread = 3;
+// numero de execuçaõ de cada thread
+int exeThread = 3;
 int numTarefas;
 int totalTarefas;
 
 void *thread1(void *arg);
 void *thread2(void *arg);
 void *thread3(void *arg);
-void escreveArquivo(char* arquivo, int nExecucao, char* programa, char* numThread);
+void escreveArquivo(char* arquivo, int nExecucao, char* programa, char* nomeThread);
 
 int main() {
     clock_t inicio, fim;
@@ -30,9 +31,9 @@ int main() {
 
     // Numero de Tarefas da Thread
     numTarefas = tarefas;
-    totalTarefas = numTarefas * numThread;
+    totalTarefas = numTarefas * exeThread;
 
-    pthread_t threads[numThread];
+    pthread_t threads[exeThread];
     inicio = clock();
     pthread_create(&threads[0], NULL, thread1, NULL);
     pthread_create(&threads[1], NULL, thread2, NULL);
@@ -41,12 +42,10 @@ int main() {
 
     // Tempo em Segundos
     tempoGasto = (double)(fim - inicio);
-    printf("\n\t Executando o Programa 1 \n\n"
-    " Executando %d tarefas \n"
-    " Foram executadas %d Tarefas no Total \n"
-    " Tempo gasto: %.2f segundos\n\n", tarefas, totalTarefas, tempoGasto);
+    printf("\n\tExecutando o Programa 1 com %d tarefas um  total de %d Tarefas tempo gasto: %.2f segundos\n\n", tarefas, totalTarefas, tempoGasto);
+    
 
-    for (int i = 0; i < numThread; i++) {
+    for (int i = 0; i < exeThread; i++) {
         pthread_join(threads[i], NULL);
     }
 
@@ -65,7 +64,7 @@ void *thread1(void *arg) {
         nExecucao++;
         escreveArquivo(arquivo1, nExecucao, programa, nomeThread);
         escreveArquivo(arquivo2, nExecucao, programa, nomeThread);
-        if(nExecucao == numThread)
+        if(nExecucao == exeThread)
         {
             nExecucao = 0;
         }
@@ -87,7 +86,7 @@ void *thread2(void *arg) {
         nExecucao++;
         escreveArquivo(arquivo1, nExecucao, programa, nomeThread);
         escreveArquivo(arquivo2, nExecucao, programa, nomeThread);
-        if(nExecucao == numThread)
+        if(nExecucao == exeThread)
         {
             nExecucao = 0;
         }
@@ -109,7 +108,7 @@ void *thread3(void *arg) {
         nExecucao++;
         escreveArquivo(arquivo1, nExecucao, programa, nomeThread);
         escreveArquivo(arquivo2, nExecucao, programa, nomeThread);
-        if(nExecucao == numThread)
+        if(nExecucao == exeThread)
         {
             nExecucao = 0;
         }

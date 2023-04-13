@@ -6,7 +6,7 @@
 
 // Definir o Numero de tarefas 
 
-#define tarefas 5000
+#define tarefas 100000
 
 // Tamanho máximo do Caracter
 #define tamMax 100
@@ -21,7 +21,7 @@ int totalTarefas;
 void *thread1(void *arg);
 void *thread2(void *arg);
 void *thread3(void *arg);
-void escreveArquivo(char* arquivo, int nExecucao, char* programa, char* numThread);
+void escreveArquivo(char* arquivo, int nExecucao, char* programa, char* nomeThread);
 
 int main() {
     clock_t inicio, fim;
@@ -40,10 +40,7 @@ int main() {
 
     // Tempo em Segundos
     tempoGasto = (double)(fim - inicio);
-    printf("\n\t Executando o Programa 1 \n\n"
-    " Executando %d tarefas \n"
-    " Foram executadas %d Tarefas no Total \n"
-    " Tempo gasto: %.2f segundos\n\n", tarefas, totalTarefas, tempoGasto);
+    printf("\n\tExecutando o Programa 2 com %d tarefas um total de %d Tarefas tempo gasto: %.2f segundos\n\n", tarefas, totalTarefas, tempoGasto);
     
     for (int i = 0; i < numThread; i++) {
         pthread_join(threads[i], NULL);
