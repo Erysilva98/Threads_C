@@ -6,16 +6,15 @@
 
 // Definir o Numero de tarefas 
 
-#define tarefas 100000
+#define tarefas 5000
 
 // Tamanho máximo do Caracter
 #define tamMax 100
 
-
+// Exclusao Mutua - Evita que as threads acesse o mesmo recurso ao mesmo tempo.
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex2 = PTHREAD_MUTEX_INITIALIZER;
 
-// numero de execuçaõ de cada thread
 int exeThread = 3;
 int numTarefas;
 int totalTarefas;
@@ -42,14 +41,13 @@ int main() {
 
     // Tempo em Segundos
     tempoGasto = (double)(fim - inicio);
-    printf("\n\tExecutando o Programa 1 com %d tarefas um  total de %d Tarefas tempo gasto: %.2f segundos\n\n", tarefas, totalTarefas, tempoGasto);
+    printf("\n\tExecutando o Programa 1 com %d tarefas um total de %d Tarefas tempo gasto: %.2f segundos\n\n", tarefas, totalTarefas, tempoGasto);
     
-
     for (int i = 0; i < exeThread; i++) {
         pthread_join(threads[i], NULL);
     }
 
-    return EXIT_SUCCESS;
+    return 0;
 }
 
 void *thread1(void *arg) {
@@ -128,10 +126,10 @@ void escreveArquivo(char* arquivo, int nExecucao, char* programa, char* nomeThre
 
     time_t now = time(NULL);
     struct tm *t = localtime(&now);
-    char data_hora[tamMax];
-    strftime(data_hora, tamMax, "%c", t);
+    char dataHora[tamMax];
+    strftime(dataHora, tamMax, "%c", t);
 
-    fprintf(fp, "%d - %s - %s - Data/Hora: %s\n", nExecucao, programa, nomeThread, data_hora);
+    fprintf(fp, "%d - %s - %s - Data/Hora: %s\n", nExecucao, programa, nomeThread, dataHora);
 
     fclose(fp);
 }

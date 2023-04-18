@@ -6,7 +6,7 @@
 
 // Definir o Numero de tarefas 
 
-#define tarefas 100000
+#define tarefas 5000
 
 // Tamanho máximo do Caracter
 #define tamMax 100
@@ -14,7 +14,7 @@
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex2 = PTHREAD_MUTEX_INITIALIZER;
 
-int numThread = 3;
+int exeThread = 3;
 int numTarefas;
 int totalTarefas;
 
@@ -29,9 +29,9 @@ int main() {
 
     // Numero de Tarefas da Thread
     numTarefas = tarefas;
-    totalTarefas = numTarefas * numThread;
+    totalTarefas = numTarefas * exeThread;
 
-    pthread_t threads[numThread];
+    pthread_t threads[exeThread];
     inicio = clock();
     pthread_create(&threads[0], NULL, thread1, NULL);
     pthread_create(&threads[1], NULL, thread2, NULL);
@@ -42,7 +42,7 @@ int main() {
     tempoGasto = (double)(fim - inicio);
     printf("\n\tExecutando o Programa 2 com %d tarefas um total de %d Tarefas tempo gasto: %.2f segundos\n\n", tarefas, totalTarefas, tempoGasto);
     
-    for (int i = 0; i < numThread; i++) {
+    for (int i = 0; i < exeThread; i++) {
         pthread_join(threads[i], NULL);
     }
 
@@ -61,7 +61,7 @@ void *thread1(void *arg) {
         nExecucao++;
         escreveArquivo(arquivo1, nExecucao, programa, nomeThread);
         escreveArquivo(arquivo2, nExecucao, programa, nomeThread);
-        if(nExecucao == numThread)
+        if(nExecucao == exeThread)
         {
             nExecucao = 0;
         }
@@ -83,7 +83,7 @@ void *thread2(void *arg) {
         nExecucao++;
         escreveArquivo(arquivo1, nExecucao, programa, nomeThread);
         escreveArquivo(arquivo2, nExecucao, programa, nomeThread);
-        if(nExecucao == numThread)
+        if(nExecucao == exeThread)
         {
             nExecucao = 0;
         }
@@ -105,7 +105,7 @@ void *thread3(void *arg) {
         nExecucao++;
         escreveArquivo(arquivo1, nExecucao, programa, nomeThread);
         escreveArquivo(arquivo2, nExecucao, programa, nomeThread);
-        if(nExecucao == numThread)
+        if(nExecucao == exeThread)
         {
             nExecucao = 0;
         }
@@ -125,10 +125,10 @@ void escreveArquivo(char* arquivo, int nExecucao, char* programa, char* nomeThre
 
     time_t now = time(NULL);
     struct tm *t = localtime(&now);
-    char data_hora[tamMax];
-    strftime(data_hora, tamMax, "%c", t);
+    char dataHora[tamMax];
+    strftime(dataHora, tamMax, "%c", t);
 
-    fprintf(fp, "%d - %s - %s - Data/Hora: %s\n", nExecucao, programa, nomeThread, data_hora);
+    fprintf(fp, "%d - %s - %s - Data/Hora: %s\n", nExecucao, programa, nomeThread, dataHora);
 
     fclose(fp);
 }
