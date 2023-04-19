@@ -6,7 +6,7 @@
 
 // Definir o Numero de tarefas 
 
-#define tarefas 5000
+#define tarefas 100000
 
 // Tamanho máximo do Caracter
 #define tamMax 100
